@@ -103,8 +103,10 @@ module ScimRails
     end
 
     def update_status(user)
-      user.public_send(ScimRails.config.user_reprovision_method) if active?
-      user.public_send(ScimRails.config.user_deprovision_method) unless active?
+      accept_args = ScimRails.config.scim_users_model.instance_method(ScimRails.config.user_reprovision_method).arity > 0
+      args = accept_args ? [@company] : []
+      user.public_send(ScimRails.config.user_reprovision_method, *args) if active?
+      user.public_send(ScimRails.config.user_deprovision_method, *args) unless active?
     end
 
     def active?
