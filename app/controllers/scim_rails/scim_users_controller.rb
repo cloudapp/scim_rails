@@ -118,7 +118,7 @@ module ScimRails
     def delete_user(user)
       accept_args = ScimRails.config.scim_users_model.instance_method(ScimRails.config.user_delete_method).arity > 0
       args = accept_args ? [@company] : []
-      user.public_send(ScimRails.config.user_delete_method, *args) unless active?
+      user.public_send(ScimRails.config.user_delete_method, *args)
     end
 
     def active?
