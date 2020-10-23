@@ -62,6 +62,12 @@ module ScimRails
       json_scim_response(object: user)
     end
 
+    def destroy
+      user = @company.public_send(ScimRails.config.scim_users_scope).find(params[:id])
+      delete_user(user)
+      json_scim_response(object: user)
+    end
+
     private
 
     def permitted_user_params
@@ -107,6 +113,12 @@ module ScimRails
       args = accept_args ? [@company] : []
       user.public_send(ScimRails.config.user_reprovision_method, *args) if active?
       user.public_send(ScimRails.config.user_deprovision_method, *args) unless active?
+    end
+
+    def delete_user(user)
+      accept_args = ScimRails.config.scim_users_model.instance_method(ScimRails.config.user_delete_method).arity > 0
+      args = accept_args ? [@company] : []
+      user.public_send(ScimRails.config.user_delete_method, *args) unless active?
     end
 
     def active?
