@@ -45,6 +45,7 @@ module ScimRails
       @signing_algorithm = ALGO_NONE
       @user_schema = {}
       @user_attributes = []
+      @user_static_attributes = {}
     end
 
     def mutable_user_attributes_schema
