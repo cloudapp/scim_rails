@@ -60,6 +60,10 @@ ScimRails.configure do |config|
     email: :email
   }
 
+  config.user_static_attributes = {
+    # key => value
+  }
+
   # Array of attributes that can be modified on the
   # user model. If the attribute is not in this array
   # the attribute cannot be modified by this Gem.

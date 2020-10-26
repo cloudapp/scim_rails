@@ -32,6 +32,7 @@ module ScimRails
       :signing_secret,
       :signing_algorithm,
       :user_attributes,
+      :user_static_attributes,
       :user_deprovision_method,
       :user_reprovision_method,
       :user_delete_method,
