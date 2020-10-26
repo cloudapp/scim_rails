@@ -27,6 +27,9 @@ module ScimRails
     end
 
     def create
+      if ScimRails.config.scim_user_create_guard.is_a?(Proc)
+        ScimRails.config.scim_user_create_guard.call(@company, permitted_user_params)
+      end
       if ScimRails.config.scim_user_prevent_update_on_create
         user = @company.public_send(ScimRails.config.scim_users_scope).create!(permitted_user_params)
       else

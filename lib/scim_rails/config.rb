@@ -29,6 +29,7 @@ module ScimRails
       :scim_users_list_order,
       :scim_users_scope,
       :scim_user_prevent_update_on_create,
+      :scim_user_create_guard,
       :signing_secret,
       :signing_algorithm,
       :user_attributes,
@@ -46,6 +47,7 @@ module ScimRails
       @user_schema = {}
       @user_attributes = []
       @user_static_attributes = {}
+      @scim_user_create_guard = nil
     end
 
     def mutable_user_attributes_schema
