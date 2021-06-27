@@ -34,12 +34,13 @@ module ScimRails
         username_key = ScimRails.config.queryable_user_attributes[:userName]
         find_by_username = Hash.new
         find_by_username[username_key] = permitted_user_params[username_key]
-        user = @company
-          .public_send(ScimRails.config.scim_users_scope)
-          .find_or_initialize_by(find_by_username)
-        user.assign_attributes(permitted_user_params.merge(ScimRails.config.user_static_attributes))
+        # find from scim_users_scope
+        user = @company.public_send(ScimRails.config.scim_users_scope).find_by(find_by_username)
+        user ||= ScimRails.config.scim_users_model.find_or_initialize_by(find_by_username)
+        user.assign_attributes(permitted_user_params)
         user.save!
       end
+
       update_status(user) unless put_active_param.nil?
       json_scim_response(object: user, status: :created)
     end
@@ -73,9 +74,11 @@ module ScimRails
     private
 
     def permitted_user_params
-      ScimRails.config.mutable_user_attributes.each.with_object({}) do |attribute, hash|
+      attrs = ScimRails.config.mutable_user_attributes.each.with_object({}) do |attribute, hash|
         hash[attribute] = find_value_for(attribute)
       end
+
+      attrs.merge(ScimRails.config.user_static_attributes)
     end
 
     def find_value_for(attribute)
