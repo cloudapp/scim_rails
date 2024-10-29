@@ -18,7 +18,9 @@ module ScimRails
     attr_writer \
       :basic_auth_model,
       :mutable_user_attributes_schema,
-      :scim_users_model
+      :scim_users_model,
+      :mutable_group_attributes_schema,
+      :scim_groups_model
 
     attr_accessor \
       :basic_auth_model_authenticatable_attribute,
@@ -37,7 +39,20 @@ module ScimRails
       :user_deprovision_method,
       :user_reprovision_method,
       :user_delete_method,
-      :user_schema
+      :user_schema,
+      :mutable_group_attributes,
+      :group_static_attributes,
+      :scim_groups_scope,
+      :group_schema,
+      :group_list_schema,
+      :queryable_group_attributes,
+      :scim_group_prevent_update_on_create,
+      :group_reprovision_method,
+      :group_deprovision_method,
+      :group_create_method,
+      :scim_groups_list_order,
+      :scim_group_create_guard,
+      :group_delete_method
 
     def initialize
       @basic_auth_model = "Company"
@@ -48,10 +63,20 @@ module ScimRails
       @user_attributes = []
       @user_static_attributes = {}
       @scim_user_create_guard = nil
+      @scim_groups_model = "Group"
+      @mutable_group_attributes = []
+      @group_schema = {}
+      @queryable_group_attributes = {}
+      @group_static_attributes = {}
+      @mutable_group_attributes_schema = {}
     end
 
     def mutable_user_attributes_schema
       @mutable_user_attributes_schema || @user_schema
+    end
+
+    def mutable_group_attributes_schema
+      @mutable_group_attributes_schema || @group_schema
     end
 
     def basic_auth_model
@@ -60,6 +85,10 @@ module ScimRails
 
     def scim_users_model
       @scim_users_model.constantize
+    end
+
+    def scim_groups_model
+      @scim_groups_model.constantize
     end
   end
 end
