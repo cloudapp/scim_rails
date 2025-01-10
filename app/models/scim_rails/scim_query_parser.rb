@@ -6,12 +6,12 @@ module ScimRails
       self.query_elements = query_string.split(" ")
     end
 
-    def attribute
+    def attribute(resource_type)
       attribute = query_elements.dig(0)
       raise ScimRails::ExceptionHandler::InvalidQuery if attribute.blank?
       attribute = attribute.to_sym
 
-      mapped_attribute = attribute_mapping(attribute)
+      mapped_attribute = attribute_mapping(attribute, resource_type)
       raise ScimRails::ExceptionHandler::InvalidQuery if mapped_attribute.blank?
       mapped_attribute
     end
@@ -28,8 +28,9 @@ module ScimRails
 
     private
 
-    def attribute_mapping(attribute)
-      ScimRails.config.queryable_user_attributes[attribute]
+    def attribute_mapping(attribute, resource_type)
+      ScimRails.config.queryable_user_attributes[attribute] if resource_type == "users"
+      ScimRails.config.queryable_group_attributes[attribute] if resource_type == "groups"
     end
 
     def sql_comparison_operator(element)

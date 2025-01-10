@@ -9,3 +9,6 @@ spec/dummy/tmp/
 
 */vendor/bundle/*
 *emfile.lock
+
+.idea/
+*.gem
