@@ -29,8 +29,11 @@ module ScimRails
     private
 
     def attribute_mapping(attribute, resource_type)
-      ScimRails.config.queryable_user_attributes[attribute] if resource_type == "users"
-      ScimRails.config.queryable_group_attributes[attribute] if resource_type == "groups"
+      if resource_type == "users"
+        ScimRails.config.queryable_user_attributes[attribute]
+      elsif resource_type == "groups"
+        ScimRails.config.queryable_group_attributes[attribute]
+      end
     end
 
     def sql_comparison_operator(element)
